@@ -1,0 +1,19 @@
+CC=gcc
+CFLAGS=-I.
+
+Parallel_sum: parallel_sum.o utils.o utils.h Sum.so
+	$(CC) -o Parallel_sum utils.o parallel_sum.o -lpthread -L. Sum.so $(CFLAGS)
+
+parallel_sum.o: 
+	$(CC) -c parallel_sum.c $(CFLAGS) $(CFLAGS)
+utils.o : utils.h
+	$(CC) -o utils.o -c utils.c $(CFLAGS)
+
+Sum.so: Sum.o
+	$(CC) -shared -o Sum.so Sum.o $(CFLAGS) 
+
+Sum.o : Sum.h
+	$(CC) -fPIC -c Sum.c	$(CFLAGS)
+
+clean:
+	rm *.o Parallel_sum
